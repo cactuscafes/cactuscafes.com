@@ -7,6 +7,82 @@
 <title>Cactus Coffee — Anasayfa</title>
 <link rel="stylesheet" href="style.css">
 <style>
+/* ── KARŞILAMA POPUP ── */
+.popup-overlay{
+  position:fixed;inset:0;
+  background:rgba(10,10,10,.7);
+  backdrop-filter:blur(6px);
+  z-index:900;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn .4s ease;
+}
+.popup-overlay.kapali{display:none;}
+.popup-kart{
+  background:#fff;
+  width:min(480px,95vw);
+  position:relative;
+  overflow:hidden;
+  animation:popupGel .5s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 40px 80px rgba(0,0,0,.4);
+}
+.popup-gorsel{
+  width:100%;aspect-ratio:4/3;
+  background:linear-gradient(135deg,#1a1712,#0f0d0a);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+/* Görseli değiştirmek için bu img etiketine src ekleyin */
+.popup-gorsel img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+}
+.popup-gorsel-placeholder{
+  font-size:48px;opacity:.15;
+  position:absolute;
+}
+.popup-gorsel-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 50%);
+}
+.popup-icerik{
+  padding:28px 32px 32px;
+  text-align:center;
+}
+.popup-mesaj{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(20px,4vw,26px);
+  font-weight:300;
+  color:var(--ink);
+  line-height:1.3;
+  margin-bottom:6px;
+}
+.popup-alt{
+  font-size:12px;font-weight:300;color:var(--mist);
+  margin-bottom:24px;letter-spacing:.5px;
+}
+.popup-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 32px;
+  background:var(--ink);color:var(--paper);
+  font-family:'DM Sans',sans-serif;font-size:11px;
+  font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  border:none;cursor:pointer;transition:all .2s;
+  width:100%;justify-content:center;
+}
+.popup-btn:hover{background:var(--gold);color:var(--ink);}
+.popup-kapat{
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(10,10,10,.5);border:none;
+  color:#fff;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;z-index:1;
+}
+.popup-kapat:hover{background:rgba(10,10,10,.8);}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes popupGel{from{opacity:0;transform:scale(.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
 /* ── HERO ── */
 .hero{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--ink);}
 .hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,#1e1a14 0%,#0a0a0a 100%);}
@@ -112,6 +188,25 @@
 <body>
 
 <!-- NAV -->
+<!-- KARŞILAMA POPUP -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-kart">
+    <button class="popup-kapat" onclick="popupKapat()">×</button>
+    <div class="popup-gorsel">
+      <!-- Kendi görselinizi eklemek için:
+           <img src="gorseliniz.jpg" alt="Cactus Coffee">
+           satırının başındaki // işaretlerini kaldırın -->
+      <span class="popup-gorsel-placeholder">🌵</span>
+      <div class="popup-gorsel-overlay"></div>
+    </div>
+    <div class="popup-icerik">
+      <div class="popup-mesaj">Seni görmek çok güzel!</div>
+      <div class="popup-alt">Cactus Coffee'ye hoş geldiniz ✦</div>
+      <button class="popup-btn" onclick="popupKapat()">Keşfetmeye Başla</button>
+    </div>
+  </div>
+</div>
+
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">CACTUS</a>
   <div class="nav-links">
@@ -318,6 +413,15 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Karşılama popup
+function popupKapat(){
+  document.getElementById('popup').classList.add('kapali');
+  document.body.style.overflow='';
+}
+// Sayfa açılınca popup göster
+document.body.style.overflow='hidden';
+document.addEventListener('keydown',e=>{if(e.key==='Escape')popupKapat();});
 </script>
 </body>
 </html>
