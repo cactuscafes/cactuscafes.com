@@ -195,6 +195,23 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 .toast.on{transform:translateX(-50%) translateY(0);}
 
+.foto-secici{display:flex;flex-direction:column;gap:6px;}
+.foto-sec-btn{
+  padding:9px 14px;background:var(--ink);color:#fff;border:none;
+  font-size:12px;font-weight:500;letter-spacing:1px;
+  cursor:pointer;transition:background .2s;text-align:center;
+}
+.foto-sec-btn:hover{background:#333;}
+.foto-sil-btn{
+  padding:7px 14px;background:none;border:1.5px solid var(--stone);
+  font-size:12px;color:var(--rd);cursor:pointer;transition:all .2s;
+}
+.foto-sil-btn:hover{border-color:var(--rd);background:rgba(139,26,26,.05);}
+.foto-yukleniyor{
+  padding:12px;background:var(--paper);text-align:center;
+  font-size:12px;color:var(--mist);
+}
+
 /* ── ONLİNE GÖSTERGE ── */
 .sync-badge{
   display:flex;align-items:center;gap:6px;
@@ -245,6 +262,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
     <div class="sidebar">
       <div class="sidebar-ttl">Menü</div>
       <button class="sidebar-btn on" onclick="panelAc('menu',this)">📋 Menü Yönetimi</button>
+      <button class="sidebar-btn" onclick="panelAc('favoriler',this)">⭐ Haftanın Favorileri</button>
       <button class="sidebar-btn" onclick="panelAc('popup',this)">🎉 Karşılama Popup</button>
       <button class="sidebar-btn" onclick="panelAc('anasayfa',this)">🏠 Ana Sayfa Yazıları</button>
       <div class="sidebar-sep"></div>
@@ -282,6 +300,44 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
         <div class="urun-grid" id="adminUrunGrid"></div>
       </div>
 
+      <!-- HAFTANINFAVORİLERİ PANELİ -->
+      <div class="panel" id="panel-favoriler">
+        <div class="panel-ttl">Haftanın Favorileri</div>
+        <div class="panel-sub">Menü sayfasının üstünde gösterilecek öne çıkan ürünleri seçin. En fazla 3 ürün ekleyebilirsiniz.</div>
+
+        <div class="popup-editor" style="margin-bottom:16px;">
+          <div class="pe-ttl">➕ Favori Ekle</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+            <div>
+              <label style="font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px;">Ürün Adı</label>
+              <input class="yeni-input" id="favoriAd" placeholder="Örn: Blue Sky" style="width:100%;">
+            </div>
+            <div>
+              <label style="font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px;">Emoji</label>
+              <input class="yeni-input" id="favoriEmoji" placeholder="🫐" maxlength="4" style="width:100%;">
+            </div>
+            <div>
+              <label style="font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px;">Fiyat</label>
+              <input class="yeni-input" id="favoriFiyat" placeholder="₺210" style="width:100%;">
+            </div>
+            <div>
+              <label style="font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px;">Açıklama (kısa)</label>
+              <input class="yeni-input" id="favoriAciklama" placeholder="Kısa açıklama..." style="width:100%;">
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px;">Fotoğraf</label>
+            <div id="favoriFotoOnizle" style="margin-bottom:8px;display:none;"><img id="favoriFotoImg" src="" style="width:100%;max-height:160px;object-fit:cover;"></div>
+            <button class="foto-sec-btn" style="width:100%;" onclick="document.getElementById('favoriFotoFile').click()">📷 Galeriden Fotoğraf Seç</button>
+            <input type="file" id="favoriFotoFile" accept="image/*" style="display:none" onchange="favoriFotoYukle(this)">
+          </div>
+          <button class="yeni-ekle" onclick="favoriEkle()">⭐ Favorilere Ekle</button>
+        </div>
+
+        <div class="pe-ttl" style="margin-bottom:12px;">Mevcut Favoriler</div>
+        <div id="favoriListesi" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
       <!-- POPUP PANELİ -->
       <div class="panel" id="panel-popup">
         <div class="panel-ttl">Karşılama Popup</div>
@@ -289,16 +345,12 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 
         <div class="popup-editor">
           <div class="pe-ttl">📸 Popup Fotoğrafı</div>
-          <div class="pe-gorsel-pnl" onclick="document.getElementById('popupFotoInput').click()">
-            <div style="font-size:32px;">🖼️</div>
-            <p>Cloudinary'den kopyaladığınız URL'yi aşağıya yapıştırın</p>
-          </div>
-          <div class="pe-field">
-            <label>Fotoğraf URL (Cloudinary)</label>
-            <input type="url" id="popupFotoUrl" placeholder="https://res.cloudinary.com/..." oninput="popupOnizle()">
-          </div>
-          <div id="popupFotoOnizle" style="margin-bottom:14px;display:none;">
+          <div id="popupFotoOnizle" style="margin-bottom:12px;display:none;">
             <img id="popupFotoImg" src="" style="width:100%;max-height:200px;object-fit:cover;" alt="Önizleme">
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:14px;">
+            <button class="foto-sec-btn" style="flex:1;" onclick="document.getElementById('popupFotoFile').click()">📷 Galeriden Seç</button>
+            <input type="file" id="popupFotoFile" accept="image/*" style="display:none" onchange="popupFotoYukle(this)">
           </div>
           <div class="pe-field">
             <label>Ana Mesaj</label>
@@ -494,23 +546,6 @@ let aktifKat = 'sicak';
 /* ══════════════════════════════════
    ADMIN BAŞLAT
 ══════════════════════════════════ */
-function adminBaslat(){
-  renderKatTabs();
-  renderUrunler();
-  // Popup değerlerini yükle
-  const p=JSON.parse(localStorage.getItem('cactus_popup')||'{}');
-  if(p.mesaj) document.getElementById('popupMesaj').value=p.mesaj;
-  if(p.alt) document.getElementById('popupAlt').value=p.alt;
-  if(p.btn) document.getElementById('popupBtn').value=p.btn;
-  if(p.foto) document.getElementById('popupFotoUrl').value=p.foto;
-  // Anasayfa değerlerini yükle
-  const a=JSON.parse(localStorage.getItem('cactus_anasayfa')||'{}');
-  if(a.eyebrow) document.getElementById('heroEyebrow').value=a.eyebrow;
-  if(a.title) document.getElementById('heroTitle').value=a.title;
-  if(a.titleEm) document.getElementById('heroTitleEm').value=a.titleEm;
-  if(a.sub) document.getElementById('heroSub').value=a.sub;
-}
-
 function renderKatTabs(){
   const tabs=document.getElementById('adminKatTabs');
   tabs.innerHTML='';
@@ -555,8 +590,15 @@ function renderUrunler(){
           <textarea onchange="urunGuncelle('${aktifKat}',${i},'aciklama',this.value)">${u.aciklama||''}</textarea>
         </div>
         <div class="uk-field">
-          <label>Fotoğraf URL (Cloudinary)</label>
-          <input value="${u.foto||''}" placeholder="https://res.cloudinary.com/..." onchange="urunGuncelle('${aktifKat}',${i},'foto',this.value)">
+          <label>Fotoğraf</label>
+          <div class="foto-secici">
+            ${u.foto ? `<img src="${u.foto}" style="width:100%;max-height:120px;object-fit:cover;margin-bottom:8px;">` : ''}
+            <button class="foto-sec-btn" onclick="fotoSec('${aktifKat}',${i})">
+              ${u.foto ? '🔄 Fotoğrafı Değiştir' : '📷 Fotoğraf Seç'}
+            </button>
+            ${u.foto ? `<button class="foto-sil-btn" onclick="fotoSil('${aktifKat}',${i})">× Fotoğrafı Kaldır</button>` : ''}
+          </div>
+          <input type="file" id="fotoInput_${aktifKat}_${i}" accept="image/*" style="display:none" onchange="fotoYukle('${aktifKat}',${i},this)">
         </div>
       </div>
       <div class="uk-actions">
@@ -589,13 +631,43 @@ function urunSil(kat,i){
   toast('🗑 Ürün silindi');
 }
 
-function fotoGuncelle(kat,i){
-  const url=prompt('Cloudinary fotoğraf URL\'sini yapıştırın:',MENU[kat][i].foto||'');
-  if(url===null) return;
-  MENU[kat][i].foto=url.trim();
+function fotoSec(kat,i){
+  document.getElementById('fotoInput_'+kat+'_'+i).click();
+}
+
+function fotoYukle(kat,i,input){
+  const file=input.files[0];
+  if(!file) return;
+  toast('⏳ Fotoğraf yükleniyor...');
+  const reader=new FileReader();
+  reader.onload=function(e){
+    // Sıkıştır
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const MAX=800;
+      let w=img.width,h=img.height;
+      if(w>h){if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}}
+      else{if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}}
+      canvas.width=w;canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      const base64=canvas.toDataURL('image/jpeg',0.75);
+      MENU[kat][i].foto=base64;
+      menuKaydet();
+      renderUrunler();
+      toast('✅ Fotoğraf yüklendi!');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function fotoSil(kat,i){
+  MENU[kat][i].foto='';
   menuKaydet();
   renderUrunler();
-  toast('📷 Fotoğraf güncellendi');
+  toast('🗑 Fotoğraf kaldırıldı');
 }
 
 function yeniUrunEkle(){
@@ -617,21 +689,40 @@ function menuKaydet(){
   localStorage.setItem('cactus_admin_menu',JSON.stringify(MENU));
 }
 
-function popupOnizle(){
-  const url=document.getElementById('popupFotoUrl').value.trim();
-  const onizle=document.getElementById('popupFotoOnizle');
-  const img=document.getElementById('popupFotoImg');
-  if(url){onizle.style.display='block';img.src=url;}
-  else{onizle.style.display='none';}
+function popupFotoYukle(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const MAX=1200;
+      let w=img.width,h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const base64=canvas.toDataURL('image/jpeg',0.8);
+      document.getElementById('popupFotoImg').src=base64;
+      document.getElementById('popupFotoOnizle').style.display='block';
+      // base64'ü sakla
+      sessionStorage.setItem('cactus_popup_foto_b64',base64);
+      toast('✅ Fotoğraf seçildi');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 function popupKaydet(){
+  const foto=sessionStorage.getItem('cactus_popup_foto_b64')||localStorage.getItem('cactus_popup_foto')||'';
   const p={
     mesaj:document.getElementById('popupMesaj').value,
     alt:document.getElementById('popupAlt').value,
     btn:document.getElementById('popupBtn').value,
-    foto:document.getElementById('popupFotoUrl').value.trim(),
+    foto:foto,
   };
+  if(foto) localStorage.setItem('cactus_popup_foto',foto);
   localStorage.setItem('cactus_popup',JSON.stringify(p));
   toast('✅ Popup kaydedildi');
 }
@@ -674,7 +765,96 @@ function toast(msg){
   clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),3000);
 }
 
-// Başlat
+/* ══════════════════════════════════
+   HAFTANINFAVORİLERİ
+══════════════════════════════════ */
+let favoriB64 = '';
+
+function favoriFotoYukle(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const MAX=800;
+      let w=img.width,h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      favoriB64=canvas.toDataURL('image/jpeg',0.75);
+      document.getElementById('favoriFotoImg').src=favoriB64;
+      document.getElementById('favoriFotoOnizle').style.display='block';
+      toast('✅ Fotoğraf seçildi');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function favoriEkle(){
+  const ad=document.getElementById('favoriAd').value.trim();
+  const emoji=document.getElementById('favoriEmoji').value.trim()||'⭐';
+  const fiyat=document.getElementById('favoriFiyat').value.trim();
+  const aciklama=document.getElementById('favoriAciklama').value.trim();
+  if(!ad){toast('⚠️ Ürün adı zorunlu');return;}
+  const favoriler=JSON.parse(localStorage.getItem('cactus_favoriler')||'[]');
+  if(favoriler.length>=3){toast('⚠️ En fazla 3 favori ekleyebilirsiniz');return;}
+  favoriler.push({ad,emoji,fiyat,aciklama,foto:favoriB64});
+  localStorage.setItem('cactus_favoriler',JSON.stringify(favoriler));
+  // Temizle
+  ['favoriAd','favoriEmoji','favoriFiyat','favoriAciklama'].forEach(id=>document.getElementById(id).value='');
+  favoriB64='';
+  document.getElementById('favoriFotoOnizle').style.display='none';
+  renderFavoriListesi();
+  toast('⭐ Favorilere eklendi');
+}
+
+function favoriSil(i){
+  const favoriler=JSON.parse(localStorage.getItem('cactus_favoriler')||'[]');
+  favoriler.splice(i,1);
+  localStorage.setItem('cactus_favoriler',JSON.stringify(favoriler));
+  renderFavoriListesi();
+  toast('🗑 Favoriden kaldırıldı');
+}
+
+function renderFavoriListesi(){
+  const favoriler=JSON.parse(localStorage.getItem('cactus_favoriler')||'[]');
+  const el=document.getElementById('favoriListesi');
+  if(!favoriler.length){
+    el.innerHTML='<div style="padding:20px;text-align:center;color:var(--mist);font-size:13px;border:1.5px dashed var(--stone);">Henüz favori eklenmedi</div>';
+    return;
+  }
+  el.innerHTML=favoriler.map((f,i)=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border:1.5px solid var(--stone);">
+      <div style="width:48px;height:48px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0;">
+        ${f.foto?`<img src="${f.foto}" style="width:100%;height:100%;object-fit:cover;">`:`${f.emoji}`}
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:500;">${f.ad}</div>
+        <div style="font-size:11px;color:var(--mist);">${f.fiyat} · ${f.aciklama||''}</div>
+      </div>
+      <button onclick="favoriSil(${i})" style="padding:6px 12px;border:1.5px solid var(--stone);background:#fff;font-size:11px;color:var(--rd);cursor:pointer;">Kaldır</button>
+    </div>`).join('');
+}
+
+// Başlangıçta favorileri yükle
+function adminBaslat(){
+  renderKatTabs();
+  renderUrunler();
+  renderFavoriListesi();
+  const p=JSON.parse(localStorage.getItem('cactus_popup')||'{}');
+  if(p.mesaj) document.getElementById('popupMesaj').value=p.mesaj;
+  if(p.alt) document.getElementById('popupAlt').value=p.alt;
+  if(p.btn) document.getElementById('popupBtn').value=p.btn;
+  const savedFoto=localStorage.getItem('cactus_popup_foto')||p.foto||'';
+  if(savedFoto){document.getElementById('popupFotoImg').src=savedFoto;document.getElementById('popupFotoOnizle').style.display='block';}
+  const a=JSON.parse(localStorage.getItem('cactus_anasayfa')||'{}');
+  if(a.eyebrow) document.getElementById('heroEyebrow').value=a.eyebrow;
+  if(a.title) document.getElementById('heroTitle').value=a.title;
+  if(a.titleEm) document.getElementById('heroTitleEm').value=a.titleEm;
+  if(a.sub) document.getElementById('heroSub').value=a.sub;
+}
 if(sessionStorage.getItem('cactus_admin')==='1') adminBaslat();
 </script>
 </body>

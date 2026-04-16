@@ -37,96 +37,108 @@
 .sube-panel{display:none;}
 .sube-panel.on{display:block;}
 
-/* ── ACCORDION KATEGORİ ── */
+/* ── ACCORDION KATEGORİ — PETROV STİLİ ── */
 .acc-kat{
-  border:1px solid var(--stone);
-  margin-bottom:8px;
+  margin-bottom:4px;
   overflow:hidden;
-  transition:box-shadow .2s;
+  position:relative;
 }
-.acc-kat:hover{box-shadow:0 4px 20px rgba(10,10,10,.07);}
-.acc-kat.open{box-shadow:0 4px 24px rgba(10,10,10,.1);}
 
+/* Dalgalı arka plan efekti */
 .acc-hdr{
   display:flex;align-items:center;gap:16px;
-  padding:20px 24px;
-  background:#fff;
+  padding:22px 28px;
   cursor:pointer;
-  transition:background .2s;
   user-select:none;
+  position:relative;
+  transition:opacity .2s;
 }
-.acc-hdr:hover{background:var(--paper);}
-.acc-kat.open .acc-hdr{background:var(--ink);}
+.acc-hdr:hover{opacity:.88;}
 
-.acc-emoji{font-size:22px;flex-shrink:0;transition:transform .3s;}
+/* Her kategori için dalgalı arka plan renkleri */
+.acc-kat:nth-child(1) .acc-hdr{background:linear-gradient(135deg,#e8d5c4 0%,#dfc9b5 100%);}
+.acc-kat:nth-child(2) .acc-hdr{background:linear-gradient(135deg,#c8d8e8 0%,#b8ccd8 100%);}
+.acc-kat:nth-child(3) .acc-hdr{background:linear-gradient(135deg,#c8dcc8 0%,#b8d0b8 100%);}
+.acc-kat:nth-child(4) .acc-hdr{background:linear-gradient(135deg,#e4d4e4 0%,#d8c4d8 100%);}
+.acc-kat:nth-child(5) .acc-hdr{background:linear-gradient(135deg,#e8e0c8 0%,#dcd4b8 100%);}
+.acc-kat:nth-child(6) .acc-hdr{background:linear-gradient(135deg,#d4e4d4 0%,#c4dac4 100%);}
+.acc-kat:nth-child(7) .acc-hdr{background:linear-gradient(135deg,#e4ccc8 0%,#d8c0bc 100%);}
+.acc-kat:nth-child(8) .acc-hdr{background:linear-gradient(135deg,#d8dce8 0%,#ccd0dc 100%);}
+
+/* Açık halinde koyu */
+.acc-kat.open .acc-hdr{filter:brightness(.88);}
+
+/* Dalgalı alt kenar SVG */
+.acc-hdr::after{
+  content:'';
+  position:absolute;bottom:-8px;left:0;right:0;height:10px;
+  z-index:2;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 10' preserveAspectRatio='none'%3E%3Cpath d='M0,5 C100,0 200,10 300,5 C400,0 500,10 600,5 C700,0 800,10 900,5 C1000,0 1100,10 1200,5 L1200,10 L0,10 Z' fill='white'/%3E%3C/svg%3E");
+  background-size:100% 100%;
+}
+
+.acc-emoji{font-size:20px;flex-shrink:0;transition:transform .3s;}
 .acc-kat.open .acc-emoji{transform:scale(1.1);}
 
 .acc-info{flex:1;}
 .acc-ad{
   font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:400;color:var(--ink);
-  line-height:1;transition:color .2s;
+  font-size:22px;font-weight:600;color:var(--ink);
+  line-height:1;letter-spacing:.5px;text-transform:uppercase;
 }
-.acc-kat.open .acc-ad{color:var(--paper);}
-
-.acc-meta{display:flex;align-items:center;gap:10px;margin-top:4px;}
-.acc-adet{font-size:11px;color:var(--mist);transition:color .2s;}
-.acc-kat.open .acc-adet{color:rgba(248,246,242,.4);}
+.acc-meta{display:flex;align-items:center;gap:10px;margin-top:5px;}
+.acc-adet{font-size:11px;color:rgba(10,10,10,.45);}
 .acc-tip{
   font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
   padding:2px 8px;border-radius:10px;
 }
-.acc-tip.ic{background:rgba(184,150,90,.12);color:var(--gold);}
-.acc-tip.yi{background:rgba(139,97,20,.1);color:#8B6114;}
-.acc-kat.open .acc-tip.ic{background:rgba(184,150,90,.2);color:var(--gold);}
-.acc-kat.open .acc-tip.yi{background:rgba(184,150,90,.15);color:#c9a96a;}
+.acc-tip.ic{background:rgba(10,10,10,.1);color:rgba(10,10,10,.5);}
+.acc-tip.yi{background:rgba(10,10,10,.1);color:rgba(10,10,10,.5);}
 
 .acc-arrow{
   width:28px;height:28px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--stone);
+  background:rgba(255,255,255,.5);
+  border:none;
   transition:all .3s;flex-shrink:0;
-  font-size:12px;color:var(--mist);
+  font-size:14px;color:rgba(10,10,10,.5);
 }
-.acc-kat.open .acc-arrow{
-  background:rgba(248,246,242,.1);
-  border-color:rgba(248,246,242,.2);
-  color:var(--paper);
-  transform:rotate(180deg);
-}
+.acc-kat.open .acc-arrow{transform:rotate(180deg);}
 
 /* ── ACCORDION BODY ── */
 .acc-body{
   max-height:0;overflow:hidden;
-  transition:max-height .4s cubic-bezier(.4,0,.2,1);
+  transition:max-height .45s cubic-bezier(.4,0,.2,1);
   background:#fff;
+  border-left:3px solid transparent;
 }
+.acc-kat:nth-child(1) .acc-body{border-color:#e8d5c4;}
+.acc-kat:nth-child(2) .acc-body{border-color:#c8d8e8;}
+.acc-kat:nth-child(3) .acc-body{border-color:#c8dcc8;}
+.acc-kat:nth-child(4) .acc-body{border-color:#e4d4e4;}
+.acc-kat:nth-child(5) .acc-body{border-color:#e8e0c8;}
+.acc-kat:nth-child(6) .acc-body{border-color:#d4e4d4;}
+.acc-kat:nth-child(7) .acc-body{border-color:#e4ccc8;}
+.acc-kat:nth-child(8) .acc-body{border-color:#d8dce8;}
 .acc-kat.open .acc-body{max-height:2000px;}
 
-.urun-list{padding:0 0 8px;}
+.urun-list{padding:8px 0;}
 .urun-row{
   display:flex;align-items:center;
   padding:13px 24px;
   border-bottom:1px solid var(--stone);
   transition:background .15s;
-  position:relative;
+  cursor:pointer;
 }
 .urun-row:last-child{border-bottom:none;}
 .urun-row:hover{background:var(--paper);}
-.urun-row::before{
-  content:'';
-  position:absolute;left:0;top:0;bottom:0;width:0;
-  background:var(--gold);
-  transition:width .2s;
-}
-.urun-row:hover::before{width:3px;}
 
 .urun-emoji{font-size:17px;margin-right:14px;flex-shrink:0;}
 .urun-ad{font-size:14px;font-weight:400;color:var(--ink);flex:1;line-height:1.3;}
 .urun-fiyat{
   font-family:'Cormorant Garamond',serif;
-  font-size:19px;font-weight:400;color:var(--gold);
-  margin-left:16px;white-space:nowrap;
+  font-size:19px;font-weight:400;color:var(--ink);
+  margin-left:16px;white-space:nowrap;opacity:.7;
 }
 
 /* ── KATEGORİ QUICK NAV ── */
@@ -142,7 +154,7 @@
   color:var(--mist);cursor:pointer;transition:all .15s;
   border-radius:20px;
 }
-.kat-nav-btn:hover{border-color:var(--gold);color:var(--gold);}
+.kat-nav-btn:hover{border-color:var(--ink);color:var(--ink);background:var(--ink);color:#fff;}
 
 /* ── ÜRÜN POPUP ── */
 .urun-popup-overlay{
@@ -209,6 +221,60 @@
 /* Ürün satırı tıklanabilir */
 .urun-row{cursor:pointer;}
 
+/* ── HAFTANIN FAVORİLERİ ── */
+.favori-sec{
+  max-width:860px;margin:0 auto;
+  padding:40px 32px 0;
+}
+.favori-ttl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.favori-ttl{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:400;color:var(--ink);
+}
+.favori-ttl em{font-style:italic;color:var(--gold);}
+.favori-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:40px;
+  padding-bottom:40px;
+  border-bottom:1px solid var(--stone);
+}
+.favori-krt{
+  cursor:pointer;
+  transition:transform .2s;
+}
+.favori-krt:hover{transform:translateY(-3px);}
+.favori-foto{
+  width:100%;aspect-ratio:4/3;
+  background:linear-gradient(135deg,#1a1712,#0f0d0a);
+  overflow:hidden;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;opacity:.6;
+}
+.favori-foto img{width:100%;height:100%;object-fit:cover;display:block;}
+.favori-ad{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.favori-aciklama{font-size:12px;font-weight:300;color:var(--mist);line-height:1.5;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.favori-fiyat{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ink);opacity:.7;}
+.favori-bos{
+  grid-column:1/-1;text-align:center;padding:32px;
+  color:var(--mist);font-size:13px;font-style:italic;
+  border:1.5px dashed var(--stone);
+}
+
+@media(max-width:768px){
+  .favori-sec{padding:32px 16px 0;}
+  .favori-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+}
+@media(max-width:480px){
+  .favori-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .favori-foto{font-size:28px;}
+  .favori-ad{font-size:13px;}
+}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .page-hero{padding:130px 20px 60px;}
@@ -261,6 +327,9 @@
   <button class="sube-tab on" onclick="subeGoster('fsm',this)">🏙 FSM Şubesi</button>
   <button class="sube-tab" onclick="subeGoster('podyum',this)">🌿 Podyumpark</button>
 </div>
+
+<!-- HAFTANIN FAVORİLERİ -->
+<div class="favori-sec" id="favoriSec"></div>
 
 <div class="menu-wrap">
 
@@ -403,7 +472,10 @@
       </div>
       <div class="acc-body">
         <div class="urun-list">
-          <div class="urun-row"><span class="urun-emoji">🫐</span><span class="urun-ad">Blue Sky</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🫐</span><span class="urun-ad">Blue Sky</span><span class="urun-fiyat">₺210</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Yaban mersini, hindistan cevizi, mavi kelebek çayı, buz</div>
+          </div>
           <div class="urun-row"><span class="urun-emoji">🌵</span><span class="urun-ad">Cactus</span><span class="urun-fiyat">₺210</span></div>
           <div class="urun-row"><span class="urun-emoji">🍉</span><span class="urun-ad">Pink Wind</span><span class="urun-fiyat">₺210</span></div>
         </div>
@@ -476,13 +548,231 @@
 
   <!-- PODYUMPARK -->
   <div class="sube-panel" id="panel-podyum">
-    <div style="text-align:center;padding:60px 20px;">
-      <div style="font-size:40px;margin-bottom:16px;">🌿</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--ink);margin-bottom:10px;">Podyumpark Menüsü</div>
-      <p style="font-size:14px;font-weight:300;color:#888;line-height:1.8;max-width:400px;margin:0 auto 28px;">FSM şubemizle aynı menüyü sunuyoruz. Sezonluk özel ürünler için şubemizi ziyaret edin.</p>
-      <button onclick="subeGoster('fsm',document.querySelector('.sube-tab'))" style="padding:12px 28px;background:var(--ink);color:var(--paper);border:none;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">FSM Menüsünü Gör</button>
+
+    <!-- Hızlı navigasyon -->
+    <div class="kat-nav">
+      <button class="kat-nav-btn" onclick="accPAc(0)">☕ Sıcak</button>
+      <button class="kat-nav-btn" onclick="accPAc(1)">🧊 Soğuk</button>
+      <button class="kat-nav-btn" onclick="accPAc(2)">🌿 Çaylar</button>
+      <button class="kat-nav-btn" onclick="accPAc(3)">🍋 Vitamin</button>
+      <button class="kat-nav-btn" onclick="accPAc(4)">🥤 Meşrubat</button>
+      <button class="kat-nav-btn" onclick="accPAc(5)">🍹 Kokteyl</button>
+      <button class="kat-nav-btn" onclick="accPAc(6)">🧇 Waffle</button>
+      <button class="kat-nav-btn" onclick="accPAc(7)">🥪 Tost</button>
+      <button class="kat-nav-btn" onclick="tumunuAcP()">Tümünü Aç</button>
     </div>
-  </div>
+
+    <!-- 1. Sıcak İçecekler -->
+    <div class="acc-kat open" id="accP-0">
+      <div class="acc-hdr" onclick="accPToggle(0)">
+        <span class="acc-emoji">☕</span>
+        <div class="acc-info">
+          <div class="acc-ad">Sıcak İçecekler</div>
+          <div class="acc-meta"><span class="acc-adet">20 çeşit</span><span class="acc-tip ic">İçecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Espresso</span><span class="urun-fiyat">₺130</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Macchiato</span><span class="urun-fiyat">₺140</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Americano</span><span class="urun-fiyat">₺180</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Cortado</span><span class="urun-fiyat">₺180</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥛</span><span class="urun-ad">Latte</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥛</span><span class="urun-ad">Caramel Latte</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥛</span><span class="urun-ad">Vanilla Latte</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥛</span><span class="urun-ad">Hazelnut Latte</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Flat White</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Cappuccino</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍫</span><span class="urun-ad">Mocha</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍫</span><span class="urun-ad">White Mocha</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Filtre Kahve</span><span class="urun-fiyat">₺180</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Türk Kahvesi</span><span class="urun-fiyat">₺130</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Double Türk Kahvesi</span><span class="urun-fiyat">₺170</span></div>
+          <div class="urun-row"><span class="urun-emoji">☕</span><span class="urun-ad">Dibek Kahvesi</span><span class="urun-fiyat">₺130</span></div>
+          <div class="urun-row"><span class="urun-emoji">🌾</span><span class="urun-ad">Salep</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍫</span><span class="urun-ad">Sıcak Çikolata</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥛</span><span class="urun-ad">Bardak Süt</span><span class="urun-fiyat">₺90</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍯</span><span class="urun-ad">Ballı Süt</span><span class="urun-fiyat">₺150</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Soğuk İçecekler -->
+    <div class="acc-kat" id="accP-1">
+      <div class="acc-hdr" onclick="accPToggle(1)">
+        <span class="acc-emoji">🧊</span>
+        <div class="acc-info">
+          <div class="acc-ad">Soğuk İçecekler</div>
+          <div class="acc-meta"><span class="acc-adet">10 çeşit</span><span class="acc-tip ic">İçecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Americano</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Latte</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Flat White</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍫</span><span class="urun-ad">Ice Mocha</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍫</span><span class="urun-ad">Ice White Mocha</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Caramel Latte</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Caramel Macchiato</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Hazelnut Latte</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Vanilla Latte</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Ice Filtre</span><span class="urun-fiyat">₺190</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Demleme Bitkisel Çaylar -->
+    <div class="acc-kat" id="accP-2">
+      <div class="acc-hdr" onclick="accPToggle(2)">
+        <span class="acc-emoji">🌿</span>
+        <div class="acc-info">
+          <div class="acc-ad">Demleme Bitkisel Çaylar</div>
+          <div class="acc-meta"><span class="acc-adet">8 çeşit</span><span class="acc-tip ic">İçecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">🌼</span><span class="urun-ad">Ihlamur</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🌿</span><span class="urun-ad">Adaçayı</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🌿</span><span class="urun-ad">Melisa Çayı</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🌺</span><span class="urun-ad">Hibiskus</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🌼</span><span class="urun-ad">Papatya</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍵</span><span class="urun-ad">Yeşil Çay</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">❄️</span><span class="urun-ad">Kış Çayı</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🦋</span><span class="urun-ad">Mavi Kelebek Çayı</span><span class="urun-fiyat">₺190</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Vitamin -->
+    <div class="acc-kat" id="accP-3">
+      <div class="acc-hdr" onclick="accPToggle(3)">
+        <span class="acc-emoji">🍋</span>
+        <div class="acc-info">
+          <div class="acc-ad">Vitamin İçecekler</div>
+          <div class="acc-meta"><span class="acc-adet">6 çeşit</span><span class="acc-tip ic">İçecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">🍊</span><span class="urun-ad">Churchill</span><span class="urun-fiyat">₺170</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍋</span><span class="urun-ad">Cool Lime</span><span class="urun-fiyat">₺190</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧊</span><span class="urun-ad">Frozen</span><span class="urun-fiyat">₺200</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥤</span><span class="urun-ad">Milkshake</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍋</span><span class="urun-ad">Limonata</span><span class="urun-fiyat">₺170</span></div>
+          <div class="urun-row"><span class="urun-emoji">🍓</span><span class="urun-ad">Çilekli Limonata</span><span class="urun-fiyat">₺180</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Meşrubatlar -->
+    <div class="acc-kat" id="accP-4">
+      <div class="acc-hdr" onclick="accPToggle(4)">
+        <span class="acc-emoji">🥤</span>
+        <div class="acc-info">
+          <div class="acc-ad">Meşrubatlar</div>
+          <div class="acc-meta"><span class="acc-adet">3 çeşit</span><span class="acc-tip ic">İçecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">💧</span><span class="urun-ad">Su</span><span class="urun-fiyat">₺30</span></div>
+          <div class="urun-row"><span class="urun-emoji">🫧</span><span class="urun-ad">Sade Soda</span><span class="urun-fiyat">₺80</span></div>
+          <div class="urun-row"><span class="urun-emoji">⚡</span><span class="urun-ad">Enerji İçeceği</span><span class="urun-fiyat">₺140</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Cactus Kokteyl -->
+    <div class="acc-kat" id="accP-5">
+      <div class="acc-hdr" onclick="accPToggle(5)">
+        <span class="acc-emoji">🍹</span>
+        <div class="acc-info">
+          <div class="acc-ad">Cactus Kokteyl</div>
+          <div class="acc-meta"><span class="acc-adet">3 özel tarif</span><span class="acc-tip ic">İçecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">🫐</span><span class="urun-ad">Blue Sky</span><span class="urun-fiyat">₺210</span></div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🌵</span><span class="urun-ad">Cactus</span><span class="urun-fiyat">₺210</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Vanilya, elma, süt, buz</div>
+          </div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🍉</span><span class="urun-ad">Pink Wind</span><span class="urun-fiyat">₺210</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Karpuz, çilek, limonata, buz</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Bubble Waffle -->
+    <div class="acc-kat" id="accP-6">
+      <div class="acc-hdr" onclick="accPToggle(6)">
+        <span class="acc-emoji">🧇</span>
+        <div class="acc-info">
+          <div class="acc-ad">Bubble Waffle</div>
+          <div class="acc-meta"><span class="acc-adet">5 çeşit</span><span class="acc-tip yi">Yiyecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🧇</span><span class="urun-ad">Classic Bubble Waffle</span><span class="urun-fiyat">₺300</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Çilek, muz, sütlü çikolata, beyaz çikolata, orem parçacıkları</div>
+          </div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🧇</span><span class="urun-ad">Dubai Bubble Waffle</span><span class="urun-fiyat">₺330</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Çilek, muz, sütlü çikolata, antep fıstığı çikolata, kadayıf parçacıkları</div>
+          </div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🧇</span><span class="urun-ad">Bitter Bubble Waffle</span><span class="urun-fiyat">₺300</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Çilek, muz, bitter çikolata, pasta süslemeleri</div>
+          </div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🍯</span><span class="urun-ad">Caramel Bubble Waffle</span><span class="urun-fiyat">₺300</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Çilek, muz, karamel çikolata, sütlü çikolata, lotus parçacıkları</div>
+          </div>
+          <div class="urun-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;width:100%;"><span class="urun-emoji">🍓</span><span class="urun-ad">Meyveli Bubble Waffle</span><span class="urun-fiyat">₺300</span></div>
+            <div style="font-size:11px;color:var(--mist);padding-left:31px;">Çilek, muz, frambuaz çikolata, muzlu çikolata, pasta süslemeleri</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Tostlar -->
+    <div class="acc-kat" id="accP-7">
+      <div class="acc-hdr" onclick="accPToggle(7)">
+        <span class="acc-emoji">🥪</span>
+        <div class="acc-info">
+          <div class="acc-ad">Tostlar</div>
+          <div class="acc-meta"><span class="acc-adet">6 çeşit</span><span class="acc-tip yi">Yiyecek</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="urun-list">
+          <div class="urun-row"><span class="urun-emoji">🧀</span><span class="urun-ad">Kaşarlı Sosyete Tostu</span><span class="urun-fiyat">₺150</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥩</span><span class="urun-ad">Sucuklu Sosyete Tostu</span><span class="urun-fiyat">₺150</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥪</span><span class="urun-ad">Karışık Sosyete Tostu</span><span class="urun-fiyat">₺170</span></div>
+          <div class="urun-row"><span class="urun-emoji">🧀</span><span class="urun-ad">Kaşarlı Sanayi Tostu</span><span class="urun-fiyat">₺220</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥩</span><span class="urun-ad">Sucuklu Sanayi Tostu</span><span class="urun-fiyat">₺220</span></div>
+          <div class="urun-row"><span class="urun-emoji">🥪</span><span class="urun-ad">Karışık Sanayi Tostu</span><span class="urun-fiyat">₺250</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-podyum -->
 
 </div>
 
@@ -548,7 +838,15 @@ function accAc(i){
   el.classList.add('open');
   setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
-function tumunuAc(){document.querySelectorAll('.acc-kat').forEach(el=>el.classList.add('open'));}
+function tumunuAc(){document.querySelectorAll('#panel-fsm .acc-kat').forEach(el=>el.classList.add('open'));}
+
+function accPToggle(i){document.getElementById('accP-'+i).classList.toggle('open');}
+function accPAc(i){
+  const el=document.getElementById('accP-'+i);
+  el.classList.add('open');
+  setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+function tumunuAcP(){document.querySelectorAll('#panel-podyum .acc-kat').forEach(el=>el.classList.add('open'));}
 
 /* ── ÜRÜN VERİLERİ ── */
 const urunler={
@@ -613,7 +911,33 @@ const urunler={
   'Kaşarlı Sanayi':{emoji:'🧀',fiyat:'₺220',tip:'yi',aciklama:'Kalın ekmek ve bol kaşar peyniri ile hazırlanan doyurucu sanayi tost.'},
   'Sucuklu Sanayi':{emoji:'🥩',fiyat:'₺220',tip:'yi',aciklama:'Kalın dilim ekmek ve bol sucuk ile hazırlanan sanayi tost.'},
   'Karışık Sanayi':{emoji:'🥪',fiyat:'₺250',tip:'yi',aciklama:'Kaşar, sucuk ve kalın ekmek — en doyurucu tercihimiz.'},
+  'Blue Sky':{emoji:'🫐',fiyat:'₺210',tip:'ic',aciklama:'Yaban mersini, hindistan cevizi, mavi kelebek çayı ve buz. Göz alıcı mavi rengiyle görsel bir şölen.'},
+  'Cactus':{emoji:'🌵',fiyat:'₺210',tip:'ic',aciklama:'Vanilya, elma, süt ve buz. Bizim imza kokteylimiz.'},
+  'Pink Wind':{emoji:'🍉',fiyat:'₺210',tip:'ic',aciklama:'Karpuz, çilek, limonata ve buz. Hafif ve ferahlatıcı.'},
 };
+
+/* ── HAFTANIN FAVORİLERİ ── */
+function renderFavoriler(){
+  const sec=document.getElementById('favoriSec');
+  const favoriler=JSON.parse(localStorage.getItem('cactus_favoriler')||'[]');
+  if(!favoriler.length){sec.innerHTML='';return;}
+  sec.innerHTML=`
+    <div class="favori-ttl-row">
+      <h2 class="favori-ttl">Öne Çıkan <em>Ürünlerimiz</em></h2>
+    </div>
+    <div class="favori-grid">
+      ${favoriler.map(f=>`
+        <div class="favori-krt" onclick="urunPopupAc('${f.ad}')">
+          <div class="favori-foto">
+            ${f.foto?`<img src="${f.foto}" alt="${f.ad}">`:`<span>${f.emoji||'☕'}</span>`}
+          </div>
+          <div class="favori-ad">${f.ad}</div>
+          <div class="favori-aciklama">${f.aciklama||''}</div>
+          <div class="favori-fiyat">${f.fiyat}</div>
+        </div>`).join('')}
+    </div>`;
+}
+renderFavoriler();
 
 function urunPopupAc(ad){
   const u=urunler[ad]; if(!u) return;
